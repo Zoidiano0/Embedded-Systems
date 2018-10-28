@@ -41,6 +41,7 @@ void setup() {
 
    //LCD start
    lcd.begin(20, 4);
+   //genera interfaz
    lcd.setCursor(0,0);
    lcd.print("Tiempo:");
    lcd.setCursor(0,1);
@@ -49,44 +50,58 @@ void setup() {
    lcd.print("T Luz #2:");
    lcd.setCursor(0,3);
    lcd.print("T Luz #3:");
-   
+
+//da valor inicial
+
+   lcd.setCursor(11,1);
+         lcd.print("OFF");
+   lcd.setCursor(11,2);
+         lcd.print("OFF");
+   lcd.setCursor(11,3);
+         lcd.print("OFF");
 }
 
 
 void loop() {
-
+//condiciones primero
       if(cont==10){
         digitalWrite(7,HIGH);
         t1=cont;
+        lcd.setCursor(11,1);
+         lcd.print("ON");
       }
       if((cont-t1)==10){
          digitalWrite(7,LOW);
+         lcd.setCursor(11,1);
+         lcd.print("OFF");
       }
 
+//Condiciones Segundo
       if(cont==25){
         digitalWrite(6,HIGH);
         t2=cont;
+        lcd.setCursor(11,2);
+         lcd.print("ON");
       }
       if((cont-t2)==15){
          digitalWrite(6,LOW);
+         lcd.setCursor(11,2);
+         lcd.print("OFF");
       }
 
-
-      if(cont==10){
+//Condiciones Tercero
+      if(cont==30){
         digitalWrite(5,HIGH);
         t3=cont;
+        lcd.setCursor(11,3);
+         lcd.print("ON");
       }
       if((cont-t3)==5){
          digitalWrite(5,LOW);
+         lcd.setCursor(11,3);
+         lcd.print("OFF");
       }
-
-   lcd.setCursor(11,1);
-   lcd.print((cont-t1));
-   lcd.setCursor(11,2);
-   lcd.print((cont-t2));
-   lcd.setCursor(11,3);
-   lcd.print((cont-t3));
-
+ 
 }
 
 
