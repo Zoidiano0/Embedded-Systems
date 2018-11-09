@@ -1,6 +1,6 @@
 // Variables
 const int Fnum=10;
-const int Cnum=4;
+const int Cnum=10;
 int MainM[Fnum][Cnum];
 int filaV[Cnum];
 int ColV[Fnum];
