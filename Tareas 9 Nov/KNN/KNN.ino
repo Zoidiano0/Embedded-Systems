@@ -1,5 +1,6 @@
 #include"train.h"
 #include"test.h"
+#include <stdio.h>  
 int respuestas[100];
 int posiciones[100];
 int col=0;
