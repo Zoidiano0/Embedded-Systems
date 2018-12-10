@@ -38,6 +38,11 @@ float normal3[40];
 //------------ DONA
 
 
+// valores
+
+int result=0;
+int aciertos=0;
+int fallos=0;
 
 
 //----------------------Fin Variables
@@ -142,11 +147,11 @@ void setup() {
   //-------------------dona con valores 
 Serial.println("Dona Valores" );
 
-      for(float f=0.0;f<1;f+=0.1){
+     // for(float f=0.0;f<1;f+=0.1){
 
         for(int pos=0;pos<40;pos++){
 
-          if(normal1[pos]>=f && normal1[pos]<=(f+.1)){
+          if(normal1[pos]>=0.0f && normal1[pos]<=(0.1f)){
             matriz[pos][0]=base[pos][0];
             matriz[pos][1]=base[pos][1];
             matriz[pos][2]=base[pos][2];
@@ -155,15 +160,16 @@ Serial.println("Dona Valores" );
             
             size1++;
 
-            for(int s=0;s<5;s++){
 
-              Serial.println( matriz[pos][s]);
-            }
+          
+
+            
           }
+          
         }
         
-        
-      }
+        efectividad();
+  //    }
    
 
 
@@ -252,4 +258,25 @@ float knn(int fila, int col, int k, int label, float datos[]){//parametros de en
           c=1;
           return clase;
         
+}
+
+
+void efectividad(){
+
+      for(int i=0;i<=29;i++){
+            result=knn(size1,5,3,3,test[i]);
+             //Serial.println(result);
+             Serial.println(i);
+               if(result==test[i][4]){
+                aciertos++;Serial.println("OK");}else{fallos++;Serial.println("Fail");}
+            }
+        Serial.println("Porcentage Aciertos:");
+      Serial.println((aciertos*100)/30);
+        Serial.println("Porcentage Fallas:");
+    Serial.println((fallos*100)/30);
+Serial.println("Aciertos:");
+Serial.println(aciertos);
+Serial.println("Fallas:");
+Serial.println(fallos);
+Serial.println(" Fin de prueba" );
 }
