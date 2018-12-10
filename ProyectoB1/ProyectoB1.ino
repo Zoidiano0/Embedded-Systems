@@ -43,7 +43,7 @@ float normal3[40];
 int result=0;
 int aciertos=0;
 int fallos=0;
-
+int cont_ef1=0;
 
 //----------------------Fin Variables
 //----------------------Matrices aux
@@ -60,8 +60,10 @@ float distancias3[40];
 //---_______DONA
 
 float donas1[40][3];
+int cont_pos=0;
+//-----------efectividad
 
-
+int exactitud[10];
 
 
 //-----------------------Fin Matrices Aux
@@ -147,31 +149,50 @@ void setup() {
   //-------------------dona con valores 
 Serial.println("Dona Valores" );
 
-     // for(float f=0.0;f<1;f+=0.1){
+      for(float fd=0.0;fd<0.9;fd+=0.1){
 
         for(int pos=0;pos<40;pos++){
 
-          if(normal1[pos]>=0.0f && normal1[pos]<=(0.1f)){
-            matriz[pos][0]=base[pos][0];
-            matriz[pos][1]=base[pos][1];
-            matriz[pos][2]=base[pos][2];
-            matriz[pos][3]=base[pos][3];
-            matriz[pos][4]=base[pos][4];
-            
+          if(normal1[pos]>=fd && normal1[pos]<=(fd+0.1f)){
+            matriz[cont_pos][0]=base[pos][0];
+            matriz[cont_pos][1]=base[pos][1];
+            matriz[cont_pos][2]=base[pos][2];
+            matriz[cont_pos][3]=base[pos][3];
+            matriz[cont_pos][4]=base[pos][4];
+            cont_pos++;
             size1++;
-
-
-          
-
             
+            Serial.println(size1);
+            delay(500);
+
           }
           
         }
-        
-        efectividad();
-  //    }
-   
 
+        for(int r=0;r<=(size1-1);r++){
+
+            for(int e=0;e<5;e++){
+
+              Serial.print(matriz[r][e]);
+              Serial.print(" ");
+            }
+          Serial.println(" ");
+        }
+
+        
+        exactitud[cont_ef1]=efectividad();
+        size1=0;
+        fallos=0;
+        aciertos=0;
+        matriz[50][5]={};
+        //Serial.println(exactitud[cont_ef1]);
+        cont_ef1++;
+        cont_pos=0;
+      }
+   
+  for(int p=0;p<10;p++){
+    Serial.println(exactitud[p]);
+  }
 
 
 }
@@ -261,7 +282,7 @@ float knn(int fila, int col, int k, int label, float datos[]){//parametros de en
 }
 
 
-void efectividad(){
+int efectividad(){
 
       for(int i=0;i<=29;i++){
             result=knn(size1,5,3,3,test[i]);
@@ -279,4 +300,6 @@ Serial.println(aciertos);
 Serial.println("Fallas:");
 Serial.println(fallos);
 Serial.println(" Fin de prueba" );
+Serial.println(" Contando componentes de matriz en el intervalo");
+  return (fallos*100)/30;
 }
