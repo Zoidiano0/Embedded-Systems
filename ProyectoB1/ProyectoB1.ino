@@ -149,11 +149,11 @@ void setup() {
   //-------------------dona con valores 
 Serial.println("Dona Valores" );
 
-      for(float fd=0.0;fd<0.9;fd+=0.1){
+      for(float fd=0.0;fd<1;fd+=0.1){
 
         for(int pos=0;pos<40;pos++){
-
-          if(normal1[pos]>=fd && normal1[pos]<=(fd+0.1f)){
+                   
+         if(normal1[pos]>=fd && normal1[pos]<=(fd+0.1f)&& size1>=0){
             matriz[cont_pos][0]=base[pos][0];
             matriz[cont_pos][1]=base[pos][1];
             matriz[cont_pos][2]=base[pos][2];
@@ -163,7 +163,7 @@ Serial.println("Dona Valores" );
             size1++;
             
             Serial.println(size1);
-            delay(500);
+            //delay(500);
 
           }
           
@@ -194,7 +194,15 @@ Serial.println("Dona Valores" );
     Serial.println(exactitud[p]);
   }
 
+ for(int r=0;r<=(size1-1);r++){
 
+            for(int e=0;e<5;e++){
+
+              Serial.print(matriz[r][e]);
+              Serial.print(" ");
+            }
+          Serial.println(" ");
+        }
 }
 
 
@@ -283,9 +291,9 @@ float knn(int fila, int col, int k, int label, float datos[]){//parametros de en
 
 
 int efectividad(){
-
+       
       for(int i=0;i<=29;i++){
-            result=knn(size1,5,3,3,test[i]);
+            result=knn(1,5,3,3,test[i]);
              //Serial.println(result);
              Serial.println(i);
                if(result==test[i][4]){
