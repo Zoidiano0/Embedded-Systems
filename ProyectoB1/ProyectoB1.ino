@@ -1,3 +1,5 @@
+#include <EEPROM.h>
+
 #include<math.h>//libreria pow
 
 //---------------------/Ingreso Librerias
@@ -411,38 +413,124 @@ Serial.println("Dona Valores" );
         cont_ef1++;
         cont_pos=0;
       }
+   Serial.println(" Cuadro de Aficiencias de donas ");
    
   for(int p=0;p<10;p++){
-    Serial.println(exactitud[p]);
+    Serial.print(" Exactitud dona # ");
+    Serial.print(p);
+    Serial.print("  "); 
+    Serial.print(exactitud[p]);
+    Serial.print("   %"); 
+    Serial.println(" "); 
   }
-
 
 
 
 // Busqueda de mayor eficiencia
 
-
+float st=0;
+float en=0;
 int efcont=0;
+float ef=0;
+ef=exactitud[0]  ;  
 
-for(int r=0;r<10;r++){
+for(int r=1;r<10;r++){
 
+  
+    if(ef<exactitud[r]){
+      efcont=r;
+       
+    }
     
 
   
 }
 
 
+switch (efcont){
+  case 0:
+          st=0.0;
+          en=0.1;
+          break;
+  case 1:
+          st=0.1;
+          en=0.2;
+          break;
+  case 2:
+          st=0.2;
+          en=0.3;
+          break;
+  case 3:
+          st=0.3;
+          en=0.4;
+          break;
+  case 4:
+          st=0.4;
+          en=0.5;
+          break;
+  case 5:
+          st=0.5;
+          en=0.6;
+          break;
+  case 6:
+          st=0.6;
+          en=0.7;
+          break;
+  case 7:
+          st=0.7;
+          en=0.8;
+          break;
+  case 8:
+          st=0.8;
+          en=0.9;
+          break;
+  case 9:
+          st=0.9;
+          en=1;
+          break;
+  
+}
+
+Serial.println(" Matriz final Grabando en Memoria EEPROM");
 
 
+int nvalores=0;
 
+       
+        for(int pos=0;pos<119;pos++){
+                   
+         if(matrixu[pos]>(st) && matrixu[pos]<=(en)){
+          for(int g=0;g<5;g++){
+          Serial.print(base[pos][g]);
+          Serial.print(" ");
+           EEPROM.update(nvalores,((int)(base[pos][g]*100))/6);
+          nvalores++;
+          }
+          Serial.println(" ");
+          }
+          
+        }
 
+nvalores=0;
+Serial.println(" Matriz final desde Memoria EEPROM");
 
-
-
-
-
-
-
+for(int a=0;a<7;a++){
+     for(int b=0;b<5;b++){
+        if(b==4){
+          Serial.println(round((float)(EEPROM.read(nvalores)*6)/100));
+          eeprom[a][b]=(round((float)(EEPROM.read(nvalores)*6)/100));
+          nvalores++;
+         
+        }else{
+        Serial.print(((float)(EEPROM.read(nvalores)*6)/100));
+        Serial.print(','); 
+         eeprom[a][b]=((float)(EEPROM.read(nvalores)*6)/100);
+        nvalores++;
+        }
+       // conteep++;
+      }
+      Serial.println(' ');
+  }nvalores=0;
 
 
 
