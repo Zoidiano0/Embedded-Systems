@@ -39,7 +39,7 @@ float normal3[40];
 
 
 // valores
-
+float extra=0.1;
 int result=0;
 int aciertos=0;
 int fallos=0;
@@ -125,6 +125,26 @@ for (int r = 0; r < 4; r++) {
   }
 
 
+//------------------Promedios Tipo 3
+
+
+for (int r = 0; r < 4; r++) {
+    for (int a = 80; a < 120; a++) {
+
+      sumatoria += base[a][r];
+
+    //  Serial.println(sumatoria);
+
+    }
+    pr_nor3[r] = (sumatoria / 40);
+    Serial.println("Promedio  3");
+Serial.println(pr_nor3[r]);
+    sumatoria = 0;
+    //   delay(500);
+
+  }
+
+
 
 
 
@@ -197,7 +217,35 @@ for (int r = 0; r < 4; r++) {
   }
 
 
+//---------obtencion de distancias tipo 3
 
+
+  for (int d = 80; d < 120; d++) {
+
+
+    distancia = sqrt(pow(base[d][0] - pr_nor3[0], 2) +
+                     pow(base[d][1] - pr_nor3[1], 2) +
+                     pow(base[d][2] - pr_nor3[2], 2) +
+                     pow(base[d][3] - pr_nor3[3], 2));
+   // Serial.println(distancia);
+    // delay(200);
+    distancias3[d-80] = distancia;
+  }
+
+
+  //   maximo 1
+
+  max3 = distancias3[0];
+
+  for (int o = 1; o < 40; o++) {
+
+    if (max3 < distancias3[o]) {
+
+      max3 = distancias3[o];
+    //  Serial.print(max2);
+    }
+
+  }
 
 
 
@@ -232,6 +280,19 @@ for (int r = 0; r < 4; r++) {
   }
 
 
+//---------------vector normalizadas tipo 3
+
+Serial.println(" imPRIMIENDO NORMAL 3");
+  for (int n = 0; n < 40; n++) {
+
+    normal3[n] = (distancias3[n] / max3);
+    Serial.println(normal3[n]);
+
+  }
+Serial.println("FIN imPRIMIENDO NORMAL 3");
+
+
+
 
 //-------------union de normales
 
@@ -259,6 +320,23 @@ for(int r=40;r<80;r++){
         
         matrixu[r]=normal2[r-40];
           
+  /*      
+   
+Serial.println(' ');
+Serial.print(" Valor Posicicion  " );
+Serial.print(r);
+Serial.print(" =  " );
+Serial.print(matrixu[r]);
+*/
+  
+}
+
+
+for(int r=80;r<120;r++){
+
+        
+        matrixu[r]=normal3[r-80];
+          
         
       
    /*
@@ -274,17 +352,30 @@ Serial.print(matrixu[r]);
 
 
 
-  //-------------------dona con valores 
 
+
+
+
+//Serial.println("imPRIMIENDO NORMAL COMPLETA");
+
+for(int a=0;a<120;a++){
+/*Serial.print("  " );
+  Serial.println(matrixu[a]);
+  Serial.print("  Valor de matriz#  " );
+  Serial.print(a);*/
+}
+
+  //-------------------dona con valores 
+//Serial.println("FIN imPRIMIENDO NORMAL COMPLETA");
 
   
 Serial.println("Dona Valores" );
 
       for(float fd=0.0;fd<1;fd+=0.1){
 
-        for(int pos=0;pos<80;pos++){
+        for(int pos=0;pos<119;pos++){
                    
-         if(matrixu[pos]>=fd && matrixu[pos]<=(fd+0.1f)){
+         if(matrixu[pos]>(fd) && matrixu[pos]<=(fd+extra)){
             matriz[cont_pos][0]=base[pos][0];
             matriz[cont_pos][1]=base[pos][1];
             matriz[cont_pos][2]=base[pos][2];
@@ -315,7 +406,7 @@ Serial.println("Dona Valores" );
         size1=0;
         fallos=0;
         aciertos=0;
-        matriz[50][5]={};
+       float matriz[120][5]={};
         //Serial.println(exactitud[cont_ef1]);
         cont_ef1++;
         cont_pos=0;
@@ -407,8 +498,10 @@ float knn(int fila, int col, int k, int label, float datos[]){//parametros de en
          }
           }
           comparacion=0;
-          c=1;
+          c=0;
+          f=0;
           return clase;
+          
         
 }
 
@@ -416,7 +509,7 @@ float knn(int fila, int col, int k, int label, float datos[]){//parametros de en
 int efectividad(){
        
       for(int i=0;i<=29;i++){
-            result=knn(80,5,3,3,test[i]);
+            result=knn(119,5,3,3,test[i]);
              //Serial.println(result);
              Serial.println(i);
                if(result==test[i][4]){
@@ -432,5 +525,5 @@ Serial.println("Fallas:");
 Serial.println(fallos);
 Serial.println(" Fin de prueba" );
 Serial.println(" Contando componentes de matriz en el intervalo");
-  return (fallos*100)/30;
+  return (aciertos*100)/30;
 }
