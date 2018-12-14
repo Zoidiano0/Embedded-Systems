@@ -417,6 +417,37 @@ Serial.println("Dona Valores" );
   }
 
 
+
+
+// Busqueda de mayor eficiencia
+
+
+int efcont=0;
+
+for(int r=0;r<10;r++){
+
+    
+
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
