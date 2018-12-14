@@ -65,6 +65,9 @@ int cont_pos=0;
 
 int exactitud[10];
 
+//union para an'alisis
+
+float matrixu[80]={};
 
 //-----------------------Fin Matrices Aux
 
@@ -89,21 +92,49 @@ void setup() {
 
       sumatoria += base[a][r];
 
-      Serial.println(sumatoria);
+     // Serial.println(sumatoria);
 
     }
     pr_nor1[r] = (sumatoria / 40);
-    Serial.println("Promedio");
-    Serial.println(pr_nor1[r]);
+   // Serial.println("Promedio");
+   // Serial.println(pr_nor1[r]);
     sumatoria = 0;
     //   delay(500);
 
   }
 
+
+
+//------------------Promedios Tipo 2
+
+
+for (int r = 0; r < 4; r++) {
+    for (int a = 40; a < 80; a++) {
+
+      sumatoria += base[a][r];
+
+    //  Serial.println(sumatoria);
+
+    }
+    pr_nor2[r] = (sumatoria / 40);
+ //   Serial.println("Promedio");
+//Serial.println(pr_nor2[r]);
+    sumatoria = 0;
+    //   delay(500);
+
+  }
+
+
+
+
+
+
+  
+
 //---valores primeros datos label 1
 
 
-//---------obtencion de distancias
+//---------obtencion de distancias tipo 1 -
 
 
 
@@ -115,7 +146,7 @@ void setup() {
                      pow(base[d][1] - pr_nor1[1], 2) +
                      pow(base[d][2] - pr_nor1[2], 2) +
                      pow(base[d][3] - pr_nor1[3], 2));
-    Serial.println(distancia);
+  //  Serial.println(distancia);
     // delay(200);
     distancias1[d] = distancia;
   }
@@ -130,30 +161,130 @@ void setup() {
     if (max1 < distancias1[o]) {
 
       max1 = distancias1[o];
-      Serial.print(max1);
+     // Serial.print(max1);
+    }
+
+  }
+
+//---------obtencion de distancias tipo 2
+
+
+  for (int d = 40; d < 80; d++) {
+
+
+    distancia = sqrt(pow(base[d][0] - pr_nor2[0], 2) +
+                     pow(base[d][1] - pr_nor2[1], 2) +
+                     pow(base[d][2] - pr_nor2[2], 2) +
+                     pow(base[d][3] - pr_nor2[3], 2));
+   // Serial.println(distancia);
+    // delay(200);
+    distancias2[d-40] = distancia;
+  }
+
+
+  //   maximo 1
+
+  max2 = distancias2[0];
+
+  for (int o = 1; o < 40; o++) {
+
+    if (max2 < distancias2[o]) {
+
+      max2 = distancias2[o];
+    //  Serial.print(max2);
     }
 
   }
 
 
-  //---------------vector normalizadas
+
+
+
+
+
+
+
+
+
+
+
+
+  //---------------vector normalizadas tipo 1
 
 
   for (int n = 0; n < 40; n++) {
 
     normal1[n] = (distancias1[n] / max1);
-    Serial.println(normal1[n]);
+   // Serial.println(normal1[n]);
 
   }
 
+
+
+//---------------vector normalizadas tipo 2
+
+
+  for (int n = 0; n < 40; n++) {
+
+    normal2[n] = (distancias2[n] / max2);
+    //Serial.println(normal2[n]);
+
+  }
+
+
+
+//-------------union de normales
+
+
+
+for(int r=0;r<40;r++){
+
+        matrixu[r]=normal1[r];
+          
+   /*
+      
+   
+Serial.println(' ');
+Serial.print(" Valor Posicicion  " );
+Serial.print(r);
+Serial.print(" =  " );
+Serial.print(matrixu[r]);
+
+  */
+}
+
+
+for(int r=40;r<80;r++){
+
+        
+        matrixu[r]=normal2[r-40];
+          
+        
+      
+   /*
+Serial.println(' ');
+Serial.print(" Valor Posicicion  " );
+Serial.print(r);
+Serial.print(" =  " );
+Serial.print(matrixu[r]);
+*/
+  
+}
+
+
+
+
   //-------------------dona con valores 
+
+
+  
 Serial.println("Dona Valores" );
 
       for(float fd=0.0;fd<1;fd+=0.1){
 
-        for(int pos=0;pos<40;pos++){
+        for(int pos=0;pos<80;pos++){
                    
-         if(normal1[pos]>=fd && normal1[pos]<=(fd+0.1f)&& size1>=0){
+         if(matrixu[pos]>=fd && matrixu[pos]<=(fd+0.1f)){
             matriz[cont_pos][0]=base[pos][0];
             matriz[cont_pos][1]=base[pos][1];
             matriz[cont_pos][2]=base[pos][2];
@@ -194,15 +325,7 @@ Serial.println("Dona Valores" );
     Serial.println(exactitud[p]);
   }
 
- for(int r=0;r<=(size1-1);r++){
 
-            for(int e=0;e<5;e++){
-
-              Serial.print(matriz[r][e]);
-              Serial.print(" ");
-            }
-          Serial.println(" ");
-        }
 }
 
 
@@ -293,7 +416,7 @@ float knn(int fila, int col, int k, int label, float datos[]){//parametros de en
 int efectividad(){
        
       for(int i=0;i<=29;i++){
-            result=knn(1,5,3,3,test[i]);
+            result=knn(80,5,3,3,test[i]);
              //Serial.println(result);
              Serial.println(i);
                if(result==test[i][4]){
